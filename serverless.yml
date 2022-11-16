@@ -1,0 +1,26 @@
+org: tvqqq
+app: spotify-now-playing
+service: spotify-now-playing
+frameworkVersion: "3"
+
+plugins:
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: ap-southeast-1
+  timeout: 3
+  environment:
+    DDB_TABLE_NAME: ${param:DDB_TABLE_NAME}
+
+functions:
+  api:
+    handler: handler.serverless
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DDB_TABLE_NAME}"
+    events:
+      - httpApi: "*"
