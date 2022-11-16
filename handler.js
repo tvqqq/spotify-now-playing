@@ -17,7 +17,7 @@ global._ = _;
 
 // routes
 const routes = require("./routes");
-app.use("/api", routes);
+app.use("/", routes);
 
 const slsHandler = serverless(app);
 
